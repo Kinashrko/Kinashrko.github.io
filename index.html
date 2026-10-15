@@ -1,663 +1,829 @@
-<!DOCTYPE html>
-<html lang="en">
+<title>Kinash Raja — QA Engineer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
 
-    <head>
-        <meta charset="utf-8">
-        <title>Kinash</title>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="" name="keywords">
-        <meta content="" name="description">
+  :root {
+    --bg: #0d0d0d;
+    --bg2: #161616;
+    --bg3: #1e1e1e;
+    --fg: #f0f0f0;
+    --fg2: #a0a0a0;
+    --accent1: #ff4d6d;
+    --accent2: #7b2fff;
+    --accent3: #00d9a3;
+    --accent4: #ffa630;
+    --border: #2a2a2a;
+    color-scheme: dark;
+  }
 
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Edu+TAS+Beginner:wght@400..700&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        <!-- Icon Font Stylesheet -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+  }
 
-        <!-- Libraries Stylesheet -->
-        <link rel="stylesheet" href="lib/animate/animate.min.css"/>
-        <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  /* NAV */
+  nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px max(24px, env(safe-area-inset-left, 0px));
+    background: rgba(13,13,13,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: var(--fg2);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--fg); }
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; }
+  .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--fg); margin: 5px 0; transition: all 0.3s; }
 
+  /* HERO */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 80px max(24px, env(safe-area-inset-left, 0px));
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(123,47,255,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(255,77,109,0.12) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .hero-text { flex: 1; min-width: 0; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(0,217,163,0.1);
+    border: 1px solid rgba(0,217,163,0.3);
+    border-radius: 999px;
+    color: var(--accent3);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero-badge::before { content: '●'; font-size: 8px; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.05;
+    text-wrap: balance;
+    margin-bottom: 20px;
+  }
+  .hero h1 .accent-line {
+    background: linear-gradient(90deg, var(--accent1) 0%, var(--accent2) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    color: var(--fg2);
+    font-size: 16px;
+    max-width: 500px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: #fff;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
 
-        <!-- Template Stylesheet -->
-        <link href="css/style.css" rel="stylesheet">
-    </head>
+  .hero-photo {
+    flex-shrink: 0;
+    position: relative;
+  }
+  .hero-photo-ring {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2), var(--accent3));
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    background: var(--bg3);
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 40px;
+  }
+  .stat { }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--fg);
+  }
+  .stat-num span { color: var(--accent1); }
+  .stat-label { font-size: 11px; color: var(--fg2); letter-spacing: 0.05em; text-transform: uppercase; }
 
-    <body>
+  /* SECTIONS */
+  section { padding: 80px max(24px, env(safe-area-inset-left, 0px)); max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    text-wrap: balance;
+    margin-bottom: 48px;
+  }
+  h2 em { font-style: normal; color: var(--accent2); }
 
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .about-bio {
+    color: var(--fg2);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .about-bio p + p { margin-top: 14px; }
+  .about-meta { display: flex; flex-direction: column; gap: 12px; }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+  }
+  .meta-icon { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
+  .meta-label { color: var(--fg2); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .meta-val { font-weight: 500; color: var(--fg); }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 24px; }
+  .exp-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .exp-card.current::before { background: linear-gradient(180deg, var(--accent3), var(--accent2)); }
+  .exp-card.prev::before { background: linear-gradient(180deg, var(--accent1), var(--accent4)); }
+  .exp-card:hover { border-color: var(--accent2); }
+  .exp-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .exp-title-group { }
+  .exp-role {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--fg);
+  }
+  .exp-company { font-size: 14px; color: var(--accent3); font-weight: 600; margin-top: 2px; }
+  .exp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(0,217,163,0.1);
+    border: 1px solid rgba(0,217,163,0.25);
+    border-radius: 999px;
+    font-size: 11px;
+    color: var(--accent3);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .exp-period { font-size: 12px; color: var(--fg2); margin-bottom: 14px; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .exp-bullets li {
+    color: var(--fg2);
+    font-size: 13.5px;
+    line-height: 1.65;
+    padding-left: 18px;
+    position: relative;
+  }
+  .exp-bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+    font-size: 12px;
+  }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .exp-tag {
+    padding: 3px 10px;
+    background: rgba(123,47,255,0.12);
+    border: 1px solid rgba(123,47,255,0.25);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 500;
+  }
+
+  /* SKILLS */
+  #skills { background: var(--bg2); max-width: 100%; padding: 80px max(24px, env(safe-area-inset-left, 0px)); }
+  #skills .inner { max-width: 1100px; margin: 0 auto; }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .skill-group {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+  }
+  .skill-group-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .skills-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .pill {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* pill colour sets */
+  .pill-auto { background: rgba(255,77,109,0.12); color: var(--accent1); border: 1px solid rgba(255,77,109,0.25); }
+  .pill-lang { background: rgba(255,166,48,0.12); color: var(--accent4); border: 1px solid rgba(255,166,48,0.25); }
+  .pill-ci   { background: rgba(0,217,163,0.12); color: var(--accent3); border: 1px solid rgba(0,217,163,0.25); }
+  .pill-meth { background: rgba(123,47,255,0.12); color: var(--accent2); border: 1px solid rgba(123,47,255,0.25); }
+  .pill-cert { background: rgba(255,255,255,0.06); color: var(--fg); border: 1px solid rgba(255,255,255,0.12); }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .project-card:hover { transform: translateY(-4px); border-color: var(--accent2); }
+  .project-accent {
+    height: 4px;
+  }
+  .proj-1 { background: linear-gradient(90deg, var(--accent1), var(--accent2)); }
+  .proj-2 { background: linear-gradient(90deg, var(--accent3), var(--accent2)); }
+  .proj-3 { background: linear-gradient(90deg, var(--accent4), var(--accent1)); }
+  .project-body { padding: 24px; }
+  .project-icon { font-size: 32px; margin-bottom: 12px; }
+  .project-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .project-desc { color: var(--fg2); font-size: 13px; line-height: 1.65; margin-bottom: 16px; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 7px; }
+  .project-tech {
+    padding: 3px 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--fg2);
+  }
+
+  /* EDUCATION */
+  .edu-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
+  .edu-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .edu-icon { font-size: 24px; flex-shrink: 0; }
+  .edu-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .edu-deg { font-size: 13px; color: var(--fg2); }
+  .edu-year { font-size: 12px; color: var(--accent3); font-weight: 600; margin-top: 4px; }
+
+  /* CONTACT */
+  #contact { background: var(--bg2); max-width: 100%; padding: 80px max(24px, env(safe-area-inset-left, 0px)); }
+  #contact .inner { max-width: 700px; margin: 0 auto; text-align: center; }
+  #contact h2 { margin-bottom: 16px; }
+  .contact-sub { color: var(--fg2); font-size: 15px; margin-bottom: 40px; line-height: 1.7; }
+  .contact-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--fg);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    min-width: 0;
+  }
+  .contact-item:hover { border-color: var(--accent2); color: var(--accent2); }
+  .contact-icon { font-size: 18px; flex-shrink: 0; }
+  .contact-text { color: var(--fg); font-size: 13px; font-weight: 500; word-break: break-all; }
+  .contact-item:hover .contact-text { color: var(--accent2); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px max(24px, env(safe-area-inset-left, 0px));
+    color: var(--fg2);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* MOBILE */
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 57px; left: 0; right: 0; background: var(--bg); padding: 20px 24px; gap: 20px; border-bottom: 1px solid var(--border); z-index: 99; }
+    .nav-toggle { display: block; }
+    .hero { min-height: auto; padding: 100px 0 60px; }
+    .hero-inner { flex-direction: column-reverse; align-items: center; text-align: center; gap: 36px; }
+    .hero-photo-ring { width: 180px; height: 180px; }
+    .hero-ctas { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .about-grid { grid-template-columns: 1fr; }
+    .exp-card { padding: 20px; }
+    .exp-header { flex-direction: column; gap: 10px; }
+  }
+</style>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">KR.</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeNav()">About</a></li>
+    <li><a href="#experience" onclick="closeNav()">Experience</a></li>
+    <li><a href="#skills" onclick="closeNav()">Skills</a></li>
+    <li><a href="#projects" onclick="closeNav()">Projects</a></li>
+    <li><a href="#contact" onclick="closeNav()">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">Available for opportunities</div>
+      <h1>R Kinash Raja<br><span class="accent-line">QA Engineer</span></h1>
+      <p class="hero-sub">Automation-first QA engineer with 3.5+ years owning the full test cycle — from post-beta test case design to production verification. ISTQB certified.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+        <a href="#experience" class="btn btn-outline">View Experience</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">3.5<span>+</span></div><div class="stat-label">Years exp.</div></div>
+        <div class="stat"><div class="stat-num">2<span>+</span></div><div class="stat-label">Companies</div></div>
+        <div class="stat"><div class="stat-num">ISTQB</div><div class="stat-label">Certified</div></div>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="hero-photo-ring">
+        <img src="https://kinashrko.github.io/img/ig2.jpg" alt="Kinash Raja" onerror="this.style.background='linear-gradient(135deg,#7b2fff,#ff4d6d)';this.style.opacity='.6'">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Who I am</div>
+  <h2>About <em>Me</em></h2>
+  <div class="about-grid">
+    <div class="about-bio">
+      <p>I'm a QA Engineer based in Colombo, Sri Lanka, with 3.5+ years of experience owning the full QA cycle for SaaS products and enterprise applications. I care about shipping quality software — catching issues before they reach users.</p>
+      <p>My day-to-day spans designing test cases after each beta release, tracking defects through Jira, running automated API tests via Playwright, and performing production verification on live accounts. I also build and maintain CI/CD test pipelines across GitHub Actions, GitLab CI, and AWS.</p>
+      <p>I've tested loyalty platforms, AI chatbot systems, and market intelligence tools used by international clients including UNDP and Unilever. ISTQB certified since February 2026.</p>
+    </div>
+    <div class="about-meta">
+      <div class="meta-item">
+        <div class="meta-icon">📍</div>
+        <div><div class="meta-label">Location</div><div class="meta-val">Maradana, Colombo, Sri Lanka</div></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-icon">🎓</div>
+        <div><div class="meta-label">Education</div><div class="meta-val">BSc IT — SLIIT (2021–2025)</div></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-icon">🏅</div>
+        <div><div class="meta-label">Certification</div><div class="meta-val">ISTQB Foundation Level (Feb 2026)</div></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-icon">🌐</div>
+        <div><div class="meta-label">Languages</div><div class="meta-val">English (Professional) · Tamil (Native) · Sinhala (Conversational)</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="padding-top:0">
+  <div class="section-label">Work history</div>
+  <h2>My <em>Experience</em></h2>
+  <div class="exp-list">
+
+    <div class="exp-card current">
+      <div class="exp-header">
+        <div class="exp-title-group">
+          <div class="exp-role">QA Engineer</div>
+          <div class="exp-company">Shoutout Labs / CX Forge</div>
         </div>
-        <!-- Spinner End -->
+        <div class="exp-badge">● Current Role</div>
+      </div>
+      <div class="exp-period">Apr 2025 – Present · Colombo, Sri Lanka</div>
+      <ul class="exp-bullets">
+        <li>Own the post-beta QA cycle end-to-end: design and execute test cases after each beta release, log and track defects in Jira, retest fixes, and approve production release.</li>
+        <li>Built and maintain a frontend Playwright automation suite; backend API pipeline currently in progress alongside Postman for manual API verification.</li>
+        <li>Set up and manage CI/CD test pipelines across GitHub Actions, GitLab CI, and AWS.</li>
+        <li>Perform production verification testing on live accounts post-release to validate each deployment.</li>
+        <li>Test and validate loyalty programs, AI chatbots, and Market Buzz platforms used by international clients including UNDP and Unilever.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="exp-tag">Playwright</span>
+        <span class="exp-tag">Postman</span>
+        <span class="exp-tag">GitHub Actions</span>
+        <span class="exp-tag">GitLab CI</span>
+        <span class="exp-tag">AWS</span>
+        <span class="exp-tag">Jira</span>
+        <span class="exp-tag">TypeScript</span>
+      </div>
+    </div>
 
-
-        <!-- Navbar Start -->
-        <div class="container-fluid nav-section border-0">
-            <nav class="navbar navbar-light">
-                <div class="navbar-nav flex-column">
-                    <a href="#pigraHome" class="nav-item nav-link active"><span class="fa fa-home"></span> Home</a>
-                    <a href="#pigraAbout" class="nav-item nav-link"><span class="far fa-address-card"></span> About</a>
-                    <a href="#pigraService" class="nav-item nav-link"><span class="fab fa-servicestack"></span> Service</a>
-                    <a href="#pigraWork" class="nav-item nav-link"><span class="fa fa-blog"></span> Work</a>
-                    <a href="#pigraContact" class="nav-item nav-link"><span class="fas fa-address-book"></span> Contact</a>
-                </div>
-            </nav>
+    <div class="exp-card prev">
+      <div class="exp-header">
+        <div class="exp-title-group">
+          <div class="exp-role">Associate QA Engineer</div>
+          <div class="exp-company">I-Context</div>
         </div>
-        <!-- Navbar End -->
+      </div>
+      <div class="exp-period">Feb 2023 – Mar 2025 · Sri Lanka (started as Intern)</div>
+      <ul class="exp-bullets">
+        <li>Progressed from QA Intern to Associate QA Engineer within the organisation.</li>
+        <li>Performed manual and exploratory testing across web and mobile applications.</li>
+        <li>Designed test plans and test cases; managed bug lifecycle in Jira.</li>
+        <li>Worked within Agile sprints, participating in sprint planning and retrospectives.</li>
+        <li>Gained initial hands-on experience with Cypress for UI automation testing.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="exp-tag">Cypress</span>
+        <span class="exp-tag">Jira</span>
+        <span class="exp-tag">Manual Testing</span>
+        <span class="exp-tag">Agile</span>
+        <span class="exp-tag">JavaScript</span>
+      </div>
+    </div>
 
-        <!-- Header Start -->
-        <div class="container-fluid" id="pigraHome">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-12 col-lg-3">
-                        <div class="header-content bg-dark h-100 pt-6 pe-6 pb-6">
-                            <a href="index.html" class="navbar-brand d-inline-flex pb-5 wow fadeInUp" data-wow-delay="0.1s">
-                                <h1 class="display-6 text-white mb-0">Kinash Raja</h1>
-                            </a>
-                            <div class="text-start d-flex flex-column justify-content-center wow fadeInUp" data-wow-delay="0.3s">
-                                <p class="text-white sub-title">👋 Hello I'm Kinash</p>
-                                <h1 class="display-6 text-white mb-0">Quality Assurance Engineer Based in Srilanka</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-9">
-                        <div class="header-img d-flex h-100 pt-6 ps-6 pb-6">
-                            <div class="row g-5">
-                                <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
-                                    <div class="bg-light p-4" style="border-radius: 68% 32% 100% 0% / 0% 75% 25% 100%;">
-                                        <img src="img/ig2.jpg" class="img-fluid w-100" style="border-radius: 68% 32% 100% 0% / 0% 75% 25% 100%;" alt="Image">
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.3s">
-                                    <h1 class="display-6 mb-4">Quality Assurance Engineer</h1>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="fas fa-map-marker-alt text-primary me-3"></i>
-                                        <p class="text-dark mb-0">No 158/22, Araliya Uyana, Kaduwela Road, Malabe, Srilanka.</p>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="fas fa-envelope text-primary me-3"></i>
-                                        <p class="text-dark mb-0">kinashrko@gmail.com</p>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="fa fa-phone-alt text-primary me-3"></i>
-                                        <p class="text-dark mb-0">(+94) 7751 88231</p>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-4">
-                                        <i class="fab fa-firefox-browser text-primary me-3"></i>
-                                        <p class="text-dark mb-0">https://github.com/Kinash15/2023-01-Kinash15</p>
-                                    </div>
-                                    <div class="d-flex">
-                                        <a class="btn btn-primary btn-sm-square me-3" href="#"><i class="fab fa-facebook-f text-white"></i></a>
-                                        <a class="btn btn-primary btn-sm-square me-3" href="#"><i class="fab fa-twitter text-white"></i></a>
-                                        <a class="btn btn-primary btn-sm-square me-3" href="#"><i class="fab fa-instagram text-white"></i></a>
-                                        <a class="btn btn-primary btn-sm-square me-0" href="#"><i class="fab fa-linkedin-in text-white"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<div id="skills">
+  <section class="inner" style="padding:0">
+    <div class="section-label">What I work with</div>
+    <h2>My <em>Skills</em></h2>
+    <div class="skills-grid">
+
+      <div class="skill-group">
+        <div class="skill-group-title">
+          <div class="sg-dot" style="background:var(--accent1)"></div>
+          Automation Testing
         </div>
-        <!-- Header End -->
-
-        
-
-        <!-- About Start -->
-        <div class="container-fluid" id="pigraAbout">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-12 col-lg-3">
-                        <div class="about-header bg-dark h-100 pt-6 pe-6 pb-6">
-                            <div class="text-start d-flex flex-column justify-content-center wow fadeInUp" data-wow-delay="0.1s">
-                                <p class="text-white sub-title">About Me</p>
-                                <h1 class="display-6 text-white mb-0">Quality Assurance Engineer Since 2023</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-9">
-                        <div class="about-content h-100 pt-6 ps-6 pb-6">
-                            <div class="row g-5">
-                                <div class="col-xl-5">
-                                    <div class="about-img bg-light p-4 wow fadeInUp" data-wow-delay="0.1s">
-                                        <img src="img/about.jpg" class="img-fluid w-100" alt="Image">
-                                        <div class="sosial-icon">
-                                            <a class="btn btn-primary btn-sm-square mb-3" href="#"><i class="fab fa-facebook-f text-white"></i></a>
-                                            <a class="btn btn-primary btn-sm-square mb-3" href="#"><i class="fab fa-twitter text-white"></i></a>
-                                            <a class="btn btn-primary btn-sm-square mb-3" href="#"><i class="fab fa-instagram text-white"></i></a>
-                                            <a class="btn btn-primary btn-sm-square mb-0" href="#"><i class="fab fa-linkedin-in text-white"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-7 wow fadeInUp" data-wow-delay="0.3s">
-                                    <h4 class="mb-4">Hello, I'm Kinash, Based in Srilanka</h4>
-                                    <p class="mb-4">I'm Kinash, As a Quality Assurance professional with over 1 year and 8 months of experience, equipped with a keen eye for detail and a pragmatic problem-solving approach. Demonstrated ability to navigate complex challenges and see projects through to successful completion. Possessing a clear, logical mindset, I am committed to continuous improvement and adept at leveraging my skills to drive tangible results. Eager to expand my expertise and contribute to a dynamic team environment where my passion for learning and penchant for overcoming challenges can thrive.
-                                    </p>
-                                    <div class="row g-4 mb-4">
-                                        <div class="col-6">
-                                            <p><strong class="fw-bold text-dark">Phone :</strong> + 94-7751-88231</p>
-                                            <p><strong class="fw-bold text-dark">Skype :</strong> live:kinashrko</p>
-                                            <p class="mb-0"><strong class="fw-bold text-dark">Address :</strong> No 158/22, Araliya Uyana, Kaduwela Road, Malabe, Srilanka.</p>
-                                        </div>
-                                        <div class="col-6">
-                                            <p><strong class="fw-bold text-dark">Nationality :</strong>Srilanka</p>
-                                            <p><strong class="fw-bold text-dark">Email :</strong> kinashrko@gmail.com</p>
-                                            <p class="mb-0"><strong class="fw-bold text-dark">Freelancer :</strong> Available</p>
-                                        </div>
-                                    </div>
-                                    <a href="https://drive.google.com/file/d/1Hf8BWCYLV_6tEWveXn135WorYvD1cH1J/view?usp=sharing" class="btn btn-primary py-2 px-4"> <i class="fas fa-download me-2"></i>Download My CV</a>
-                                    <a href="https://drive.google.com/drive/folders/1MMrNvhrwoRTGNq2Hj8BJ-5UZUSaC3Ejy?usp=sharing" class="btn btn-primary py-2 px-4"> <i class="fas fa-download me-2"></i>Certificates</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="skills-pills">
+          <span class="pill pill-auto">Playwright</span>
+          <span class="pill pill-auto">Cypress</span>
+          <span class="pill pill-auto">Postman</span>
+          <span class="pill pill-auto">Jest</span>
+          <span class="pill pill-auto">API Testing</span>
+          <span class="pill pill-auto">UI Testing</span>
         </div>
-        <!-- About End -->
+      </div>
 
-
-        <!-- Education Start -->
-        <div class="container-fluid">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-lg-3">
-                        <div class="education-header bg-dark h-100 pt-6 pe-6 pb-6">
-                            <div class="text-start d-flex flex-column justify-content-center wow fadeInUp" data-wow-delay="0.1s">
-                                <p class="text-white sub-title">Education</p>
-                                <h1 class="display-6 text-white mb-0">My education qualification</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="education-content h-100 pt-6 ps-6 pb-6">
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <div class="education-item rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.1s">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <p class="fs-5 mb-0 me-4">SLIIT University, Malabe</p>
-                                            <div>
-                                                <span class="fa fa-calendar me-1"></span> 2020 - 2024
-                                            </div>
-                                        </div>
-                                        <h4 class="mb-3">Bsc(hons) in Information Technology Specialization in Interactive Media</h4>
-                                        <p class="mb-0">I have successfully completed numerous projects across various domains, including mobile application development, web development, database management, and computer networking. My specialization has further deepened my skills in UI/UX design, game development, AR/VR projects, 3D modeling, and audio engineering.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="education-item rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.3s">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <p class="fs-5 mb-0 me-4">Esoft Metro Campus</p>
-                                            <div>
-                                                <span class="fa fa-calendar me-1"></span> 2016 - 2017
-                                            </div>
-                                        </div>
-                                        <h4 class="mb-3">Diploma In Information Technology</h4>
-                                        <p class="mb-0">I have completed a diploma in Information Technology with a specialization in E-Commerce. This program equipped me with a solid foundation in IT principles and a deep understanding of e-commerce strategies and technologies.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="skill-group">
+        <div class="skill-group-title">
+          <div class="sg-dot" style="background:var(--accent4)"></div>
+          Programming & Scripting
         </div>
-        <!-- Education End -->
-
-        <!-- Experience Start -->
-        <div class="container-fluid">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-lg-3">
-                        <div class="experience-header bg-dark h-100 pt-6 pe-6 pb-6">
-                            <div class="text-start d-flex flex-column justify-content-center wow fadeInUp" data-wow-delay="0.1s">
-                                <p class="text-white sub-title">Experience</p>
-                                <h1 class="display-6 text-white mb-0">My real work experience</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="experience-content h-100 pt-6 ps-6 pb-6">
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <div class="experience-item rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.1s">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <p class="fs-5 mb-0 me-4">Associate</p>
-                                            <div>
-                                                <span class="fa fa-calendar me-1"></span> 2023 Sep - 2024 Present
-                                            </div>
-                                        </div>
-                                        <h4 class="mb-3">Associate Quality Assurance Engineer</h4>
-                                        <p class="mb-0">As a Software Quality Assurance Engineer, gaining experience in Manual and Automation (Cypress) testing, including End-to-end testing, API testing, Unit testing, and GitLab Pipeline (CI/CD) Development.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="experience-item rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.3s">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <p class="fs-5 mb-0 me-4">Intern</p>
-                                            <div>
-                                                <span class="fa fa-calendar me-1"></span> 2023 Feb - 2023 Aug
-                                            </div>
-                                        </div>
-                                        <h4 class="mb-3">Intern Quality Assurance Engineer</h4>
-                                        <p class="mb-0">As a Software Quality Assurance Engineer, gaining experience in Manual and Automation (Cypress) testing, including End-to-end testing, API testing, Unit testing, and GitLab Pipeline (CI/CD) Development.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="skills-pills">
+          <span class="pill pill-lang">JavaScript</span>
+          <span class="pill pill-lang">TypeScript</span>
+          <span class="pill pill-lang">Python</span>
+          <span class="pill pill-lang">Java</span>
+          <span class="pill pill-lang">C</span>
+          <span class="pill pill-lang">C++</span>
         </div>
-        <!-- Exparience End -->
+      </div>
 
-
-        <!-- Skills Start -->
-        <div class="container-fluid">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-lg-3">
-                        <div class="skills-header h-100 bg-dark pt-6 pe-6 pb-6">
-                            <div class="text-start d-flex flex-column justify-content-center wow fadeInUp" data-wow-delay="0.1s">
-                                <p class="text-white sub-title">Skills</p>
-                                <h1 class="display-6 text-white mb-0">My expertise skills</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="skills-content h-100 pt-6 ps-6 pb-6">
-                            <div class="row g-4">
-                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
-                                    <div class="skills-item text-center rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.1s">
-                                        <div class="text-primary text-center mb-3"><span class="fab fa-cypress fa-3x"></span></div>
-                                        <div class="counter-counting d-flex justify-content-center">
-                                            <h4 class="display-6" data-toggle="counter-up">98</h4>
-                                            <h4 class="display-6">%</h4>
-                                        </div>
-                                        <p class="mb-0">Cypress</p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
-                                    <div class="skills-item text-center rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.3s">
-                                        <div class="text-primary text-center mb-3"><span class="fab fa-postman fa-3x"></span></div>
-                                        <div class="counter-counting d-flex justify-content-center">
-                                            <h4 class="display-6" data-toggle="counter-up">95</h4>
-                                            <h4 class="display-6">%</h4>
-                                        </div>
-                                        <p class="mb-0">Postman</p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
-                                    <div class="skills-item text-center rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.5s">
-                                        <div class="text-primary text-center mb-3"><span class="fab fa-sketch fa-3x"></span></div>
-                                        <div class="counter-counting d-flex justify-content-center">
-                                            <h4 class="display-6" data-toggle="counter-up">87</h4>
-                                            <h4 class="display-6">%</h4>
-                                        </div>
-                                        <p class="mb-0">Jest</p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
-                                    <div class="skills-item text-center rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.7s">
-                                        <div class="text-primary text-center mb-3"><span class="fab fa-elementor fa-3x"></span></div>
-                                        <div class="counter-counting d-flex justify-content-center">
-                                            <h4 class="display-6" data-toggle="counter-up">90</h4>
-                                            <h4 class="display-6">%</h4>
-                                        </div>
-                                        <p class="mb-0">Java</p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
-                                    <div class="skills-item text-center rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.1s">
-                                        <div class="text-primary text-center mb-3"><span class="fab fa-js-square fa-3x"></span></div>
-                                        <div class="counter-counting d-flex justify-content-center">
-                                            <h4 class="display-6" data-toggle="counter-up">90</h4>
-                                            <h4 class="display-6">%</h4>
-                                        </div>
-                                        <p class="mb-0">JavaScript</p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
-                                    <div class="skills-item text-center rounded p-4 h-100 wow fadeInUp" data-wow-delay="0.3s">
-                                        <div class="text-primary text-center mb-3"><span class="fab fa-html5 fa-3x"></span></div>
-                                        <div class="counter-counting d-flex justify-content-center">
-                                            <h4 class="display-6" data-toggle="counter-up">98</h4>
-                                            <h4 class="display-6">%</h4>
-                                        </div>
-                                        <p class="mb-0">HTML & CSS</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="skill-group">
+        <div class="skill-group-title">
+          <div class="sg-dot" style="background:var(--accent3)"></div>
+          CI/CD & DevOps
         </div>
-        <!-- Skills End -->
-
-
-        <!-- Service Start -->
-        <div class="container-fluid" id="pigraService">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-lg-3">
-                        <div class="service-header h-100 bg-dark pt-6 pe-6 pb-6">
-                            <div class="text-start d-flex flex-column justify-content-center wow fadeInUp" data-wow-delay="0.1s">
-                                <p class="text-white sub-title">My Services</p>
-                                <h1 class="display-6 text-white mb-0">What I do for you</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="service-content h-100 pt-6 ps-6 pb-6">
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <div class="service-item p-4 wow fadeInUp" data-wow-delay="0.1s">
-                                        <div class="row g-4 align-items-center">
-                                            <div class="col-xl-2">
-                                                <i class="fas fa-bezier-curve fa-3x"></i>
-                                            </div>
-                                            <div class="col-xl-3">
-                                                <a href="#" class="h4 mb-0">QA Testing</a>
-                                            </div>
-                                            <div class="col-xl-4">
-                                                <p class="mb-0">Proficient in writing and executing automated tests using Cypress, Postman for API testing, and Jest for unit and integration testing. Expertise in creating robust test strategies, performing regression testing, and ensuring cross-browser compatibility. Strong understanding of software development life cycle (SDLC) and Agile methodologies.
-                                                </p>
-                                            </div>
-                                            <div class="col-xl-3">
-                                                <p><i class="fa fa-check me-2"></i> Cypress</p>
-                                                <p><i class="fa fa-check me-2"></i> Postman</p>
-                                                <p class="mb-0"><i class="fa fa-check me-2"></i> Jest</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="service-item p-4 wow fadeInUp" data-wow-delay="0.3s">
-                                        <div class="row g-4 align-items-center">
-                                            <div class="col-xl-2">
-                                                <i class="fas fa-laptop-code fa-3x"></i>
-                                            </div>
-                                            <div class="col-xl-3">
-                                                <a href="#" class="h4 mb-0">Web Development</a>
-                                            </div>
-                                            <div class="col-xl-4">
-                                                <p class="mb-0">Experience in designing, developing, and deploying dynamic websites and applications. Proficient in both front-end and back-end development, with expertise in HTML, CSS, JavaScript (React, Vue), and server-side technologies such as Node.js, Python (Django/Flask), and PHP. 
-                                                    Skilled in building responsive, user-friendly interfaces, as well as optimizing back-end functionality, database management (SQL, MongoDB), and API integration. 
-                                                </p>
-                                            </div>
-                                            <div class="col-xl-3">
-                                                <p><i class="fa fa-check me-2"></i> Front End</p>
-                                                <p><i class="fa fa-check me-2"></i> Back End</p>
-                                                <p class="mb-0"><i class="fa fa-check me-2"></i> Mobile/Web App</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="service-item p-4 wow fadeInUp" data-wow-delay="0.5s">
-                                        <div class="row g-4 align-items-center">
-                                            <div class="col-xl-2">
-                                                <i class="fab fa-app-store fa-3x"></i>
-                                            </div>
-                                            <div class="col-xl-3">
-                                                <a href="#" class="h4 mb-0">Mobile Application</a>
-                                            </div>
-                                            <div class="col-xl-4">
-                                                <p class="mb-0">Experience specializing in Android development using Kotlin and Java. Proficient in building and maintaining high-performance, scalable mobile applications with clean, efficient code. Expertise in Android SDK, Jetpack components, and integrating RESTful APIs. 
-                                                    Skilled in designing intuitive, user-friendly interfaces and optimizing app performance.
-                                
-                                                </p>
-                                            </div>
-                                            <div class="col-xl-3">
-                                                <p><i class="fa fa-check me-2"></i> UI/UX Design</p>
-                                                <p><i class="fa fa-check me-2"></i> Kotlin</p>
-                                                <p class="mb-0"><i class="fa fa-check me-2"></i> Mobile App</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="skills-pills">
+          <span class="pill pill-ci">GitHub Actions</span>
+          <span class="pill pill-ci">GitLab CI</span>
+          <span class="pill pill-ci">AWS</span>
+          <span class="pill pill-ci">Git</span>
         </div>
-        <!-- Service End -->
+      </div>
 
-
-        <!-- Portfolio Start -->
-        <div class="container-fluid" id="pigraWork">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-lg-3">
-                        <div class="portfolio-header h-100 bg-dark pt-6 pe-6 pb-6">
-                            <div class="text-start d-flex flex-column justify-content-center wow fadeInUp" data-wow-delay="0.1s">
-                                <p class="text-white sub-title">Portfolio</p>
-                                <h1 class="display-6 text-white mb-0">My Recent Works</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="portfolio-content h-100 pt-6 ps-6 pb-6">
-                           
-                            <div class="portfolio-item py-5 border-bottom wow fadeInUp" data-wow-delay="0.3s">
-                                <div class="row g-4 align-items-center">
-                                    <div class="col-xl-6">
-                                        <h4 class="text-body">Mobile Development</h4>
-                                        <h1 class="display-6 mb-0">Notebook Mobile App</h1>
-                                    </div>
-                                    <div class="col-9 col-xl-4">
-                                        <div class="portfolio-img">
-                                            <div class="portfolio-img-inner">
-                                                <img src="img/photo2.jpg" class="img-fluid" alt="Image">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 col-xl-2">
-                                        <div class="view-img">
-                                            <a href="img/photo2.jpg" class="btn btn-primary btn-lg-square"  data-lightbox="portfolio-2"><i class="fas fa-plus"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="portfolio-item py-5 wow fadeInUp" data-wow-delay="0.5s">
-                                <div class="row g-4 align-items-center">
-                                    <div class="col-xl-6">
-                                        <h4 class="text-body">Photography</h4>
-                                        <h1 class="display-6 mb-0">My Own Collection</h1>
-                                    </div>
-                                    <div class="col-9 col-xl-4">
-                                        <div class="portfolio-img">
-                                            <div class="portfolio-img-inner">
-                                                <img src="img/photo1.jpg" class="img-fluid" alt="Image">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 col-xl-2">
-                                        <div class="view-img">
-                                            <a href="img/photo1.jpg" class="btn btn-primary btn-lg-square"  data-lightbox="portfolio-3"><i class="fas fa-plus"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="skill-group">
+        <div class="skill-group-title">
+          <div class="sg-dot" style="background:var(--accent2)"></div>
+          Manual Testing & Tools
         </div>
-        <!-- Portfolio End -->
-
-        <!-- Contact Start -->
-        <div class="container-fluid" id="pigraContact">
-            <div class="container">
-                <div class="row g-0">
-                    <div class="col-lg-3">
-                        <div class="contact-header h-100 bg-dark pt-6 pe-6 pb-6">
-                            <div class="text-start d-flex flex-column justify-content-center wow fadeInUp" data-wow-delay="0.1s">
-                                <p class="text-white sub-title">Contact Me</p>
-                                <h1 class="display-6 text-white mb-0">Let’s Start A New Project</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-9">
-                       <div class="contact-content h-100 pt-6 ps-6 pb-6">
-                            <div class="bg-light p-4">
-                                <div class="row g-5">
-                                    <div class="col-xl-5 wow fadeInUp" data-wow-delay="0.1s">
-                                        <p class="mb-4">The contact Details</p>
-                                        <div class="d-flex mb-4">
-                                            <div class="btn-xl-square bg-primary text-white me-3">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                            </div>
-                                            <div>
-                                                <h4>Address</h4>
-                                                <p class="mb-0">Kaduwela Road, Malabe. Srilanka</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex mb-4">
-                                            <div class="btn-xl-square bg-primary text-white me-3">
-                                                <i class="fas fa-envelope"></i>
-                                            </div>
-                                            <div>
-                                                <h4>Mail Us</h4>
-                                                <p class="mb-0">kinashrko@gmail.com</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div class="btn-xl-square bg-primary text-white me-3">
-                                                <i class="fa fa-phone-alt"></i>
-                                            </div>
-                                            <div>
-                                                <h4>Telephone</h4>
-                                                <p class="mb-0">+ 94-7751-88231</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-7 wow fadeInUp" data-wow-delay="0.3s">
-                                        <div>
-                                            <form>
-                                                <div class="row g-3">
-                                                    <div class="col-lg-12 col-xl-6">
-                                                        <div class="form-floating">
-                                                            <input type="text" class="form-control border-0" id="name" placeholder="Your Name">
-                                                            <label for="name">Your Name</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-xl-6">
-                                                        <div class="form-floating">
-                                                            <input type="email" class="form-control border-0" id="email" placeholder="Your Email">
-                                                            <label for="email">Your Email</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-xl-6">
-                                                        <div class="form-floating">
-                                                            <input type="phone" class="form-control border-0" id="phone" placeholder="Phone">
-                                                            <label for="phone">Your Phone</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-xl-6">
-                                                        <div class="form-floating">
-                                                            <input type="text" class="form-control border-0" id="project" placeholder="Project">
-                                                            <label for="project">Your Project</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-floating">
-                                                            <input type="text" class="form-control border-0" id="subject" placeholder="Subject">
-                                                            <label for="subject">Subject</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-floating">
-                                                            <textarea class="form-control border-0" placeholder="Leave a message here" id="message" style="height: 120px"></textarea>
-                                                            <label for="message">Message</label>
-                                                        </div>
-                
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <button class="btn btn-primary w-100 py-3">Send Message</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 wow fadeInUp" data-wow-delay="0.5s">
-                                        <div class="rounded">
-                                            <iframe class="rounded w-100" 
-                                            style="height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31687.079365185728!2d79.94483252514287!3d6.904362812940613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae256d59601df81%3A0x31a1dd96e8d49ba!2sMalabe%2C%20Sri%20Lanka!5e0!3m2!1sen!2sbd!4v1727937962655!5m2!1sen!2sbd" 
-                                            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                       </div>
-                    </div>
-                </div>
-            </div>
+        <div class="skills-pills">
+          <span class="pill pill-meth">Jira</span>
+          <span class="pill pill-meth">Test Case Design</span>
+          <span class="pill pill-meth">Bug Lifecycle</span>
+          <span class="pill pill-meth">Regression Testing</span>
+          <span class="pill pill-meth">Production Verification</span>
         </div>
-        <!-- Contact End -->
+      </div>
 
-
-        <!-- Footer Start -->
-        <div class="container-fluid footer bg-dark border-bottom-0">
-            <div class="container wow fadeIn" data-wow-delay="0.1s">
-                <div class="row g-0">
-                    <div class="col-12">
-                       <div class="footer-content h-100 pt-6 ps-6 pb-6">
-                            <div class="row g-4 align-items-center">
-                                <div class="col-12 text-center">
-                                    <div class="d-flex justify-content-center">
-                                        <a class="btn btn-light btn-md-square me-3" href=""><i class="fab fa-facebook-f"></i></a>
-                                        <a class="btn btn-light btn-md-square me-3" href=""><i class="fab fa-twitter"></i></a>
-                                        <a class="btn btn-light btn-md-square me-3" href=""><i class="fab fa-instagram"></i></a>
-                                        <a class="btn btn-light btn-md-square me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                                    </div>
-                                </div>
-                                <div class="col-12 text-center">
-                                    <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-body me-2"></i>Kinash Solutions</a>, All right reserved.</span>
-                                </div>
-                            </div>
-                       </div>        
-                    </div>
-                </div>
-            </div>
+      <div class="skill-group">
+        <div class="skill-group-title">
+          <div class="sg-dot" style="background:var(--fg2)"></div>
+          Methodologies & Certs
         </div>
-        <!-- Footer End -->
+        <div class="skills-pills">
+          <span class="pill pill-cert">Agile</span>
+          <span class="pill pill-cert">Scrum</span>
+          <span class="pill pill-cert">ISTQB FL</span>
+          <span class="pill pill-cert">HTML</span>
+          <span class="pill pill-cert">CSS</span>
+        </div>
+      </div>
 
+    </div>
+  </section>
+</div>
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>   
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Things I've built</div>
+  <h2>My <em>Projects</em></h2>
+  <div class="projects-grid">
 
-        
-        <!-- JavaScript Libraries -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="lib/wow/wow.min.js"></script>
-        <script src="lib/easing/easing.min.js"></script>
-        <script src="lib/waypoints/waypoints.min.js"></script>
-        <script src="lib/counterup/counterup.min.js"></script>
-        <script src="lib/lightbox/js/lightbox.min.js"></script>
-        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-        
+    <div class="project-card">
+      <div class="project-accent proj-1"></div>
+      <div class="project-body">
+        <div class="project-icon">📱</div>
+        <div class="project-title">Notebook Mobile App</div>
+        <p class="project-desc">A mobile note-taking application with clean UI and structured note management. Built as part of academic coursework exploring mobile app development.</p>
+        <div class="project-stack">
+          <span class="project-tech">Mobile</span>
+          <span class="project-tech">UI/UX</span>
+          <span class="project-tech">Academic</span>
+        </div>
+      </div>
+    </div>
 
-        <!-- Javascript -->
-        <script src="js/main.js"></script>
-    </body>
+    <div class="project-card">
+      <div class="project-accent proj-2"></div>
+      <div class="project-body">
+        <div class="project-icon">📷</div>
+        <div class="project-title">Photography Portfolio</div>
+        <p class="project-desc">A curated collection of personal photography work showcased as a web portfolio, demonstrating front-end development skills and visual presentation.</p>
+        <div class="project-stack">
+          <span class="project-tech">HTML</span>
+          <span class="project-tech">CSS</span>
+          <span class="project-tech">JavaScript</span>
+        </div>
+      </div>
+    </div>
 
-</html>
+    <div class="project-card">
+      <div class="project-accent proj-3"></div>
+      <div class="project-body">
+        <div class="project-icon">🔁</div>
+        <div class="project-title">API Testing Pipeline</div>
+        <p class="project-desc">End-to-end backend API test automation using Playwright's built-in API testing capabilities with CI/CD integration via GitHub Actions for continuous quality assurance.</p>
+        <div class="project-stack">
+          <span class="project-tech">Playwright</span>
+          <span class="project-tech">GitHub Actions</span>
+          <span class="project-tech">TypeScript</span>
+          <span class="project-tech">API Testing</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION (inside projects section layout) -->
+<section id="education" style="padding-top:0">
+  <div class="section-label">Academic background</div>
+  <h2>My <em>Education</em></h2>
+  <div class="edu-list">
+    <div class="edu-card">
+      <div class="edu-icon">🎓</div>
+      <div>
+        <div class="edu-name">Sri Lanka Institute of Information Technology (SLIIT)</div>
+        <div class="edu-deg">BSc (Hons) in Information Technology</div>
+        <div class="edu-year">2021 – 2025</div>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon">📚</div>
+      <div>
+        <div class="edu-name">Esoft Metro Campus</div>
+        <div class="edu-deg">Diploma in Information Technology</div>
+        <div class="edu-year">2017</div>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon">🏅</div>
+      <div>
+        <div class="edu-name">ISTQB Foundation Level</div>
+        <div class="edu-deg">Certified Tester — Foundation Level</div>
+        <div class="edu-year">February 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="inner">
+    <div class="section-label">Let's connect</div>
+    <h2>Get In <em>Touch</em></h2>
+    <p class="contact-sub">I'm open to new opportunities. Whether you have a role, a project, or just want to connect — feel free to reach out.</p>
+    <div class="contact-links">
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-text">kinashrko@gmail.com</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div class="contact-text">+94 77 518 8231</div>
+      </div>
+      <a href="https://linkedin.com/in/kinash-raja-347926283" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon">🔗</div>
+        <div class="contact-text">LinkedIn Profile</div>
+      </a>
+      <a href="https://github.com/kinashrko" target="_blank" rel="noopener" class="contact-item">
+        <div class="contact-icon">💻</div>
+        <div class="contact-text">GitHub</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 R Kinash Raja · QA Engineer · Maradana, Colombo, Sri Lanka</p>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  function closeNav() { links.classList.remove('open'); }
+
+  // smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // fade-in on scroll
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.exp-card, .skill-group, .project-card, .edu-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    obs.observe(el);
+  });
+</script>
