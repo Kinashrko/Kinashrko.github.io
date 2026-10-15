@@ -1,4 +1,5 @@
 <title>Kinash Raja — QA Engineer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
@@ -459,77 +460,105 @@
   }
 
   /* MOBILE */
-  @media (max-width: 768px) {
+  /* ── TABLET ── */
+  @media (max-width: 900px) {
+    .hero-photo-ring { width: 200px; height: 200px; }
+    .hero h1 { font-size: 52px; }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
     /* NAV */
     .nav-links { display: none; }
-    .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 57px; left: 0; right: 0; background: var(--bg); padding: 24px; gap: 24px; border-bottom: 1px solid var(--border); z-index: 99; }
-    .nav-links.open a { font-size: 16px; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: fixed; top: 57px; left: 0; right: 0;
+      background: var(--bg); padding: 24px; gap: 20px;
+      border-bottom: 1px solid var(--border); z-index: 99;
+    }
+    .nav-links.open a { font-size: 18px; }
     .nav-toggle { display: block; }
 
-    /* HERO */
-    .hero { min-height: 100svh; padding: 72px 24px 48px; display: flex; align-items: center; }
-    .hero-inner { flex-direction: column; align-items: center; text-align: center; gap: 28px; }
-    .hero-photo-ring { width: 160px; height: 160px; }
-    .hero-badge { font-size: 12px; padding: 6px 14px; }
-    .hero h1 { font-size: 38px; line-height: 1.1; }
-    .hero-sub { font-size: 15px; line-height: 1.75; max-width: 100%; margin-bottom: 28px; }
-    .hero-ctas { justify-content: center; gap: 12px; }
-    .btn { padding: 13px 22px; font-size: 15px; }
-    .hero-stats { justify-content: center; gap: 28px; margin-top: 28px; }
-    .stat-num { font-size: 26px; }
-    .stat-label { font-size: 11px; }
+    /* HERO — portrait layout */
+    .hero {
+      min-height: 100svh;
+      padding: 80px 20px 52px;
+      align-items: flex-start;
+    }
+    .hero-inner {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+      width: 100%;
+    }
+    .hero-photo { order: -1; }
+    .hero-photo-ring { width: 150px; height: 150px; }
+    .hero-badge { font-size: 12px; }
+    .hero h1 { font-size: 36px; line-height: 1.15; }
+    .hero-sub { font-size: 16px; line-height: 1.8; max-width: 100%; }
+    .hero-ctas { justify-content: center; flex-wrap: wrap; }
+    .btn { padding: 14px 24px; font-size: 16px; width: 100%; justify-content: center; }
+    .hero-stats { justify-content: center; gap: 24px; margin-top: 24px; }
+    .stat-num { font-size: 28px; }
+    .stat-label { font-size: 12px; }
 
     /* SECTIONS */
-    section { padding: 60px 24px; }
-    h2 { font-size: 30px; margin-bottom: 32px; }
-    .section-label { font-size: 11px; }
+    section { padding: 56px 20px; }
+    #skills { padding: 56px 20px; }
+    #contact { padding: 56px 20px; }
+    #education { padding: 0 20px 56px; }
+    h2 { font-size: 32px; margin-bottom: 28px; }
+    .section-label { font-size: 12px; }
 
     /* ABOUT */
-    .about-grid { grid-template-columns: 1fr; gap: 28px; }
-    .about-bio { font-size: 15px; line-height: 1.8; }
-    .meta-item { padding: 14px 16px; font-size: 13px; }
-    .meta-val { font-size: 14px; }
+    .about-grid { grid-template-columns: 1fr; gap: 24px; }
+    .about-bio { font-size: 16px; line-height: 1.8; }
+    .meta-item { padding: 14px 16px; }
+    .meta-val { font-size: 15px; }
+    .meta-label { font-size: 12px; }
 
     /* EXPERIENCE */
+    .exp-list { gap: 16px; }
     .exp-card { padding: 20px 18px; }
-    .exp-header { flex-direction: column; gap: 10px; }
-    .exp-role { font-size: 17px; }
-    .exp-company { font-size: 14px; }
+    .exp-header { flex-direction: column; gap: 8px; }
+    .exp-role { font-size: 18px; }
+    .exp-company { font-size: 15px; }
     .exp-period { font-size: 13px; }
-    .exp-bullets li { font-size: 14px; line-height: 1.7; }
+    .exp-bullets { gap: 10px; }
+    .exp-bullets li { font-size: 15px; line-height: 1.7; }
     .exp-tags { gap: 6px; margin-top: 14px; }
-    .exp-tag { font-size: 11px; padding: 4px 10px; }
+    .exp-tag { font-size: 12px; padding: 4px 10px; }
 
     /* SKILLS */
-    #skills { padding: 60px 24px; }
-    .skills-grid { grid-template-columns: 1fr; gap: 14px; }
+    .skills-grid { grid-template-columns: 1fr; gap: 12px; }
     .skill-group { padding: 18px; }
-    .skill-group-title { font-size: 13px; margin-bottom: 12px; }
-    .pill { font-size: 12px; padding: 5px 11px; }
+    .skill-group-title { font-size: 14px; }
+    .pill { font-size: 13px; padding: 6px 12px; }
 
     /* PROJECTS */
     .projects-grid { grid-template-columns: 1fr; gap: 16px; }
     .project-body { padding: 20px; }
-    .project-icon { font-size: 28px; }
-    .project-title { font-size: 16px; }
-    .project-desc { font-size: 14px; }
-    .project-tech { font-size: 12px; }
+    .project-icon { font-size: 30px; }
+    .project-title { font-size: 17px; }
+    .project-desc { font-size: 14px; line-height: 1.7; }
+    .project-tech { font-size: 12px; padding: 4px 10px; }
 
     /* EDUCATION */
-    #education { padding: 0 24px 60px; }
+    .edu-list { gap: 12px; }
     .edu-card { padding: 16px 18px; }
+    .edu-icon { font-size: 22px; }
     .edu-name { font-size: 14px; }
     .edu-deg { font-size: 13px; }
-    .edu-year { font-size: 12px; }
+    .edu-year { font-size: 13px; }
 
     /* CONTACT */
-    #contact { padding: 60px 24px; }
-    .contact-sub { font-size: 15px; }
+    .contact-sub { font-size: 15px; line-height: 1.8; }
     .contact-links { flex-direction: column; align-items: stretch; gap: 12px; }
-    .contact-item { padding: 16px 18px; font-size: 14px; }
-    .contact-text { font-size: 14px; }
+    .contact-item { padding: 16px 18px; font-size: 15px; }
+    .contact-text { font-size: 15px; }
 
-    footer { font-size: 13px; padding: 24px; }
+    footer { font-size: 13px; padding: 24px 20px; }
   }
 </style>
 
