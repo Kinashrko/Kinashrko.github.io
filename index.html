@@ -884,7 +884,7 @@
 </div>
 
 <footer>
-  <p>© 2026 R Kinash Raja · QA Engineer · Maradana, Colombo, Sri Lanka</p>
+  <p>© 2026 Kinash · QA Engineer · Colombo, Sri Lanka</p>
 </footer>
 
 <script>
@@ -893,11 +893,16 @@
   toggle.addEventListener('click', () => links.classList.toggle('open'));
   function closeNav() { links.classList.remove('open'); }
 
-  // smooth scroll
+  // smooth scroll with nav offset
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const t = document.querySelector(a.getAttribute('href'));
-      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      if (t) {
+        e.preventDefault();
+        const navH = document.querySelector('nav').offsetHeight;
+        const top = t.getBoundingClientRect().top + window.scrollY - navH - 16;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
     });
   });
 
